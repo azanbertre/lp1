@@ -1,6 +1,5 @@
 #include <fstream>
 #include "diary.h"
-#include <iostream>
 
 Diary::Diary(const std::string& filename) {
     this->filename = filename;
