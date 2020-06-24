@@ -47,7 +47,7 @@ void app::add(const std::string content) {
     Message message = Message(content);
 
     diary.add_message(message);
-    diary.dump_messages();
+    // diary.dump_messages();
 }
 
 void app::list_messages() {

@@ -5,7 +5,9 @@
 #include "datetime.h"
 
 struct Message {
+    Message();
     Message(const std::string& content);
+    Message(const std::string& content, const datetime& dt);
 
     datetime dt;
     std::string content;

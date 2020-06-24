@@ -8,8 +8,8 @@ struct Diary {
 
     std::string filename;
     Message* messages;
-    size_t messages_count;
-    size_t messages_capacity;
+    unsigned messages_count;
+    unsigned messages_capacity;
 
     void add_message(const Message& message);
     void dump_messages();

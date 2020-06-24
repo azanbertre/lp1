@@ -2,18 +2,34 @@
 #include <ctime>
 #include "datetime.h"
 
+datetime::datetime(
+    const unsigned year,
+    const unsigned month,
+    const unsigned day,
+    const unsigned hour,
+    const unsigned minute,
+    const unsigned second
+) {
+    this->year = year;
+    this->month = month;
+    this->day = day;
+    this->hour = hour;
+    this->minute = minute;
+    this->second = second;
+}
+
 datetime datetime::now() {
     std::time_t now = std::time(nullptr);
     tm *ltm = std::localtime(&now);
 
-    datetime dt {
-        (unsigned int) 1900 + ltm->tm_year,
-        (unsigned int) 1 + ltm->tm_mon,
-        (unsigned int) ltm->tm_mday,
-        (unsigned int) ltm->tm_hour,
-        (unsigned int) ltm->tm_min,
-        (unsigned int) ltm->tm_sec
-    };
+    datetime dt = datetime(
+        (unsigned) 1900 + ltm->tm_year,
+        (unsigned) 1 + ltm->tm_mon,
+        (unsigned) ltm->tm_mday,
+        (unsigned) ltm->tm_hour,
+        (unsigned) ltm->tm_min,
+        (unsigned) ltm->tm_sec
+    );
 
     return dt;
 }
