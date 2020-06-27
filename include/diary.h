@@ -14,6 +14,7 @@ struct Diary {
     void add_message(const Message& message);
     void dump_messages();
     void load_messages();
+    void update_capacity();
 };
 
 #endif
