@@ -18,12 +18,11 @@ int app::run(int argc, char* argv[]) {
         } else {
             std::string message = argv[2];
             // Pega mensagens com espaço
-            for (int i = 2; i < argc; i++) {
+            for (int i = 3; i < argc; i++) {
+                message.append(" ");
                 message.append(argv[i]);
-                if (i < argc - 1) {
-                    message.append(" ");
-                }
             }
+            std::cout << message << std::endl;
             add(message);
         }
     } else if (action == "list") {
