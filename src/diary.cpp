@@ -91,3 +91,14 @@ void Diary::load_messages() {
         this->messages_count += 1;
     }
 }
+
+Message* Diary::search(const std::string search) {
+    for (size_t i = 0; i < this->messages_count; i++) {
+        Message* current_message = &this->messages[i];
+        if (current_message->content.find(search) != std::string::npos) {
+            return current_message;
+        }
+    }
+
+    return nullptr;
+}

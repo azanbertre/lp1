@@ -15,6 +15,7 @@ struct Diary {
     void dump_messages();
     void load_messages();
     void update_capacity();
+    Message* search(const std::string search);
 };
 
 #endif

@@ -27,6 +27,14 @@ int app::run(int argc, char* argv[]) {
         }
     } else if (action == "list") {
         list_messages();
+    } else if (action == "search") {
+        std::string message = argv[2];
+        // Pega mensagens com espaço
+        for (int i = 3; i < argc; i++) {
+            message.append(" ");
+            message.append(argv[i]);
+        }
+        search(message);
     } else {
         return show_usage(argv[0]);
     }
@@ -54,6 +62,12 @@ void app::list_messages() {
         const Message& message = diary.messages[i];
         std::cout << "-" << message.content << std::endl;
     }
+}
+
+void app::search(const std::string search) {
+    Message* message = diary.search(search);
+
+    std::cout << "Mensagem encontrada: " << message->content << std::endl;
 }
 
 int app::show_usage(const std::string &prog_name) {
