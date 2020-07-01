@@ -92,13 +92,16 @@ void Diary::load_messages() {
     }
 }
 
-Message* Diary::search(const std::string search) {
+std::vector<Message*> Diary::search(const std::string search) {
+
+    std::vector<Message*> search_result;
+
     for (size_t i = 0; i < this->messages_count; i++) {
         Message* current_message = &this->messages[i];
         if (current_message->content.find(search) != std::string::npos) {
-            return current_message;
+            search_result.push_back(current_message);
         }
     }
 
-    return nullptr;
+    return search_result;
 }

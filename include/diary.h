@@ -2,6 +2,7 @@
 #define diary_h
 
 #include "message.h"
+#include <vector>
 
 struct Diary {
     Diary(const std::string& filename);
@@ -15,7 +16,7 @@ struct Diary {
     void dump_messages();
     void load_messages();
     void update_capacity();
-    Message* search(const std::string search);
+    std::vector<Message*> search(const std::string search);
 };
 
 #endif

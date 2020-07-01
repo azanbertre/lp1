@@ -65,9 +65,17 @@ void app::list_messages() {
 }
 
 void app::search(const std::string search) {
-    Message* message = diary.search(search);
+    std::vector<Message*> messages = diary.search(search);
 
-    std::cout << "Mensagem encontrada: " << message->content << std::endl;
+    std::cout << messages.size() << " mensagens encontradas!" << std::endl;
+
+    if (messages.empty()) {
+        return;
+    }
+
+    for (size_t i = 0; i < messages.size(); i++) {
+        std::cout << "- " << messages[i]->content << std::endl;
+    }
 }
 
 int app::show_usage(const std::string &prog_name) {
