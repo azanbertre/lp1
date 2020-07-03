@@ -48,7 +48,7 @@ void Diary::dump_messages() {
             file << "# " << message_date << "\n\n";
             current_date = message_date;
         }
-        file << current_message.format_message() << "\n";
+        file << "- " << current_message.dt.get_current_time() << " " << current_message.content << "\n";
     }
     file.close();
 }

@@ -22,7 +22,7 @@ int app::run(int argc, char* argv[]) {
             add();
         } else {
             std::string message = argv[2];
-            // Pega mensagens com espaço
+            // get whitespaces
             for (int i = 3; i < argc; i++) {
                 message.append(" ");
                 message.append(argv[i]);
@@ -31,10 +31,20 @@ int app::run(int argc, char* argv[]) {
             add(message);
         }
     } else if (action == "list") {
-        list_messages();
+        if (argc == 2) {
+            list();
+        } else {
+            std::string format = argv[2];
+            // get whitespaces
+            for (int i = 3; i < argc; i++) {
+                format.append(" ");
+                format.append(argv[i]);
+            }
+            list(format);
+        }
     } else if (action == "search") {
         std::string message = argv[2];
-        // Pega mensagens com espaço
+        // get whitespaces
         for (int i = 3; i < argc; i++) {
             message.append(" ");
             message.append(argv[i]);
@@ -66,11 +76,15 @@ void app::add(const std::string content) {
     std::cout << "\n" << "Message added!!" << std::endl;
 }
 
-void app::list_messages() {
+void app::list() {
+    this->list(this->diary.default_format);
+}
+
+void app::list(const std::string format) {
     std::cout << "# List of messages (" << this->diary.messages_count << ")\n" << std::endl;
     for (size_t i = 0; i < this->diary.messages_count; ++i) {
-        const Message& message = this->diary.messages[i];
-        std::cout << "-" << message.content << std::endl;
+        Message& message = this->diary.messages[i];
+        std::cout << message.format_message(format) << std::endl;
     }
 }
 
@@ -168,7 +182,7 @@ void open_menu(app* app) {
         std::cout << "Terminating..." << std::endl;
         return;
     } else if (selected == 1) {
-        app->list_messages();
+        app->list();
     } else if (selected == 2) {
         app->add();
     } else if (selected == 3) {

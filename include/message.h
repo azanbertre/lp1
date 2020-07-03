@@ -12,8 +12,7 @@ struct Message {
     datetime dt;
     std::string content;
 
-    std::string format_message();
-    bool compare_dates(const Message &other_message);
+    std::string format_message(const std::string format);
 };
 
 #endif
