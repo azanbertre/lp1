@@ -1,6 +1,10 @@
 #include <fstream>
 #include "diary.h"
 
+Diary::Diary() : messages(nullptr), messages_count(0), messages_capacity(10) {
+    this->messages = new Message[this->messages_capacity];
+}
+
 Diary::Diary(const std::string& filename) : messages(nullptr), messages_count(0), messages_capacity(10) {
     this->filename = filename;
     this->messages = new Message[this->messages_capacity];

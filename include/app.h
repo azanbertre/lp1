@@ -7,6 +7,7 @@
 struct app {
     Diary diary;
 
+    app();
     app(const std::string& filename);
 
     int run(int argc, char* argv[]);
@@ -15,6 +16,7 @@ struct app {
     void add(const std::string message);
     void list_messages();
     void search(const std::string search);
+    void load_config();
 };
 
 #endif

@@ -5,12 +5,14 @@
 #include <vector>
 
 struct Diary {
+    Diary();
     Diary(const std::string& filename);
 
     std::string filename;
     Message* messages;
     unsigned messages_count;
     unsigned messages_capacity;
+    std::string default_format;
 
     void add_message(const Message& message);
     void dump_messages();

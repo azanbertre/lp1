@@ -1,7 +1,12 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 
 #include "app.h"
+
+app::app() : diary() {
+    this->load_config();
+};
 
 app::app(const std::string& filename) : diary(filename) {}
 
@@ -76,6 +81,44 @@ void app::search(const std::string search) {
     for (size_t i = 0; i < messages.size(); i++) {
         std::cout << "- " << messages[i]->content << std::endl;
     }
+}
+
+void app::load_config() {
+
+    std::string filename = "diary.config";
+    std::ifstream file(filename);
+
+    if (!file.good()) {
+        std::ofstream file(filename);
+        file << "path=diary.md" << "\n";
+        file << "default_format=%d %t: %m" << "\n";
+        file.close();
+
+        // Carrega mensagens se arquivo já existir
+        this->diary.filename = "diary.md";
+        this->diary.load_messages();
+
+        return;
+    }
+
+    std::string line;
+    while (!file.eof()) {
+        std::getline(file, line);
+
+        if (line.size() == 0) {
+            continue;
+        }
+
+        if (line.find("path") != std::string::npos) {
+            this->diary.filename = line.substr(5, line.size());
+        }
+
+        if (line.find("default_format") != std::string::npos) {
+            this->diary.default_format = line.substr(15, line.size());
+        }
+    }
+
+    file.close();
 }
 
 int app::show_usage(const std::string &prog_name) {
