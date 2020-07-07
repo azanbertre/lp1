@@ -2,18 +2,20 @@
 #define account_h
 
 #include <string>
+#include "client.h"
+#include "agency.h"
 
 class Account {
     public:
-        std::string number;
-        std::string owner;
+        Client client;
+        Agency agency;
         double balance;
 
         bool withdraw(double value);
         void deposit(double value);
         bool transfer(double value, Account &account);
 
-        Account(std::string _owner, std::string _number);
+        Account(Client _client, Agency _agency);
 };
 
 #endif

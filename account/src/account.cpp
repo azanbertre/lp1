@@ -1,6 +1,6 @@
 #include "account.h"
 
-Account::Account(std::string _owner, std::string _number) : number(_number), owner(_owner) {
+Account::Account(Client _client, Agency _agency) : client(_client), agency(_agency) {
     this->balance = 0.0f;
 }
 
