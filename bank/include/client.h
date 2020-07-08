@@ -7,6 +7,7 @@ class Client {
     public:
         std::string name;
         std::string cpf;
+        static size_t clientCount;
 
         Client(std::string _name, std::string _cpf);
 };

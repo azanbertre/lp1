@@ -1,7 +1,10 @@
 #include "account.h"
 
+size_t Account::accountCount;
+
 Account::Account(Client _client, Agency _agency) : client(_client), agency(_agency) {
     this->balance = 0.0f;
+    this->accountCount += 1;
 }
 
 bool Account::withdraw(double value) {

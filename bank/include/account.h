@@ -10,6 +10,7 @@ class Account {
         Client client;
         Agency agency;
         double balance;
+        static size_t accountCount;
 
         bool withdraw(double value);
         void deposit(double value);
