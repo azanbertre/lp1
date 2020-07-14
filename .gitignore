@@ -6,3 +6,5 @@ main_old.cpp
 test_main.cpp
 *.zip
 *.config
+*.csv
+*.txt
