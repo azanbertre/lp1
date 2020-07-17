@@ -25,19 +25,19 @@ bool Client::buy(Product* product) {
 
     if (this->bag.size() <= 0) {
         Product* p = new Product(product->code, product->name, product->measure, product->currency, product->price, 1);
-        this->bag.push_back(p);
+        this->bag.push(p);
     } else {
         bool found = false;
         for (size_t i = 0; i < this->bag.size(); i++) {
-            if (this->bag[i]->code == product->code) {
+            if (this->bag.get(i)->code == product->code) {
                 found = true;
-                this->bag[i]->quantity += 1;
+                this->bag.get(i)->quantity += 1;
                 break;
             }
         }
         if (!found) {
             Product* p = new Product(product->code, product->name, product->measure, product->currency, product->price, 1);
-            this->bag.push_back(p);
+            this->bag.push(p);
         }
     }
 
@@ -59,7 +59,7 @@ void Client::dump_bag() {
     }
 
     for (size_t i = 0; i < this->bag.size(); i++) {
-        Product* product = this->bag[i];
+        Product* product = this->bag.get(i);
 
         std::stringstream ss;
         std::string price_string;

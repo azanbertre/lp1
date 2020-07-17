@@ -2,13 +2,13 @@
 #define client_h
 
 #include <string>
-#include <vector>
 #include "product.h"
+#include "vector_market.h"
 
 class Client {
     public:
         std::string name;
-        std::vector<Product*> bag;
+        vector_market<Product*> bag;
         double balance;
 
         Client();

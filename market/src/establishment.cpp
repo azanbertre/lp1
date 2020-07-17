@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <vector>
 #include "establishment.h"
 
 Establishment::Establishment(std::string _name) : name(_name) {
@@ -9,6 +10,11 @@ Establishment::Establishment(std::string _name) : name(_name) {
 
 Establishment::~Establishment() {
     this->dump_products("estoque.csv");
+}
+
+bool Establishment::restock(Product* product, int quantity) {
+    product->quantity += quantity;
+    return true;
 }
 
 bool Establishment::sell(Product* product) {
@@ -21,24 +27,24 @@ bool Establishment::sell(Product* product) {
 
     if (this->purchases.size() <= 0) {
         Product* p = new Product(product->code, product->name, product->measure, product->currency, product->price, 1);
-        this->purchases.push_back(p);
+        this->purchases.push(p);
     } else {
         bool found = false;
         for (size_t i = 0; i < this->purchases.size(); i++) {
-            if (this->purchases[i]->code == product->code) {
+            if (this->purchases.get(i)->code == product->code) {
                 found = true;
-                this->purchases[i]->quantity += 1;
+                this->purchases.get(i)->quantity += 1;
                 break;
             }
         }
         if (!found) {
             Product* p = new Product(product->code, product->name, product->measure, product->currency, product->price, 1);
-            this->purchases.push_back(p);
+            this->purchases.push(p);
         }
     }
 
     for (size_t i = 0; i < this->purchases.size(); i++) {
-        Product* p = this->purchases[i];
+        Product* p = this->purchases.get(i);
 
         std::stringstream ss;
         std::string price_string;
@@ -59,8 +65,8 @@ bool Establishment::sell(Product* product) {
 Product* Establishment::get_product_by_code(std::string code) {
     size_t count = this->products.size();
     for (size_t i = 0; i < count; i++) {
-        if (code == this->products[i]->code) {
-            return products[i];
+        if (code == this->products.get(i)->code) {
+            return products.get(i);
         }
     }
 
@@ -77,7 +83,7 @@ void Establishment::dump_products(std::string filename) {
     file << "COD,PRODUTO,UNIDADE DE MEDIDA,PREÇO,QUANTIDADE" << std::endl;
 
     for (size_t i = 0; i < this->products.size(); i++) {
-        Product* p = this->products[i];
+        Product* p = this->products.get(i);
 
         std::stringstream ss;
         std::string price_string;
@@ -139,6 +145,6 @@ void Establishment::load_products(std::string filename) {
 
         std::string quantity = data[5];
 
-        this->products.push_back(new Product(code, name, measure, currency, price, (unsigned) std::stoi(quantity)));
+        this->products.push(new Product(code, name, measure, currency, price, (unsigned) std::stoi(quantity)));
     }
 }

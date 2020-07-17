@@ -5,7 +5,7 @@
 
 #include "../include/app.h"
 
-app::app() : establishment("Supermarket") {
+app::app() : establishment("Supermarket"), provider("Provider") {
     this->current_client = nullptr;
 };
 
@@ -40,12 +40,28 @@ void app::list_products() {
     size_t count = this->establishment.products.size();
     for (size_t i = 0; i < count; i++) {
         std::string qnt = "Qnt: ";
-        if (this->establishment.products[i]->quantity < 10) {
+        if (this->establishment.products.get(i)->quantity < 10) {
             qnt = "Qnt:  ";
         }
-        std::cout << qnt << this->establishment.products[i]->quantity << " | " <<
-            this->establishment.products[i]->name << " - " << this->establishment.products[i]->currency <<  " " <<
-            this->establishment.products[i]->price << std::endl;
+        std::cout << qnt << this->establishment.products.get(i)->quantity << " | " << "[" <<
+            this->establishment.products.get(i)->code << "] " <<
+            this->establishment.products.get(i)->name << " - " << this->establishment.products.get(i)->currency <<  " " <<
+            this->establishment.products.get(i)->price << std::endl;
+    }
+    std::cout << "\n" << std::endl;
+}
+
+void app::list_provider_products() {
+    std::cout << "--------------------------------------------" << std::endl;
+    std::cout << "List of products\n" << std::endl;
+
+    size_t count = this->provider.products.size();
+    for (size_t i = 0; i < count; i++) {
+        std::string qnt = "Qnt: ";
+        if (this->provider.products.get(i)->quantity < 10) {
+            qnt = "Qnt:  ";
+        }
+        std::cout << qnt << this->provider.products.get(i)->quantity << " | " << this->provider.products.get(i)->name << std::endl;
     }
     std::cout << "\n" << std::endl;
 }
@@ -57,9 +73,10 @@ void app::list_purchases() {
     size_t count = this->establishment.purchases.size();
     for (size_t i = 0; i < count; i++) {
         std::string qnt = "Qnt: ";
-        std::cout << qnt << this->establishment.purchases[i]->quantity << " | " <<
-            this->establishment.purchases[i]->name << " - " << this->establishment.purchases[i]->currency <<  " " <<
-            this->establishment.purchases[i]->price << std::endl;
+        std::cout << qnt << this->establishment.purchases.get(i)->quantity << " | " << "[" <<
+            this->establishment.products.get(i)->code << "] " <<
+            this->establishment.purchases.get(i)->name << " - " << this->establishment.purchases.get(i)->currency <<  " " <<
+            this->establishment.purchases.get(i)->price << std::endl;
     }
     std::cout << "\n" << std::endl;
 }
@@ -71,7 +88,7 @@ void app::total_earned() {
 
     size_t count = this->establishment.purchases.size();
     for (size_t i = 0; i < count; i++) {
-        total += (this->establishment.purchases[i]->price * this->establishment.purchases[i]->quantity);
+        total += (this->establishment.purchases.get(i)->price * this->establishment.purchases.get(i)->quantity);
     }
     std::cout << "Total earned until now is: R$ " << total << "\n" << std::endl;
 }
@@ -118,11 +135,38 @@ void app::show_bag() {
 
     size_t count = this->current_client->bag.size();
     for (size_t i = 0; i < count; i++) {
-        std::cout << this->current_client->bag[i]->quantity << " x " << this->current_client->bag[i]->name << " - " << this->current_client->bag[i]->currency <<  " " <<
-            this->current_client->bag[i]->price << std::endl;
+        std::cout << this->current_client->bag.get(i)->quantity << " x " << this->current_client->bag.get(i)->name << " - " << this->current_client->bag.get(i)->currency <<  " " <<
+            this->current_client->bag.get(i)->price << std::endl;
     }
 
     std::cout << "\n" << std::endl;
+}
+
+void app::restock() {
+    std::cout << "Product code to restock: " << std::ends;
+
+    std::string code;
+    std::getline(std::cin, code);
+
+    std::cout << "Quantity: " << std::ends;
+
+    std::string quantity;
+    std::getline(std::cin, quantity);
+
+    std::cout << "\n" << std::endl;
+
+    Product* product_with_code = this->establishment.get_product_by_code(code);
+    Product* product = this->provider.get_product_by_name(product_with_code->name);
+
+    int qnt = std::stoi(quantity);
+
+    if ((product->quantity - qnt) <= 0) {
+        std::cout << "Sorry, there's not enough of " << product->name << " on the stock " << std::endl;
+    } else {
+        this->provider.pass(product, qnt);
+        this->establishment.restock(product_with_code, qnt);
+        std::cout << "Restocked " << qnt << " " << product_with_code->measure << " of " << product->name << "!!!" << std::endl;
+    }
 }
 
 bool handle_menus(app* app) {
@@ -144,6 +188,10 @@ bool open_establishment_menu(app* app) {
     std::cout << "2) List products" << "\n" << std::endl;
     std::cout << "3) List purchases" << "\n" << std::endl;
     std::cout << "4) Total earned" << "\n" << std::endl;
+    std::cout << "# --------------- #" << "\n" << std::endl;
+    std::cout << "5) List provider products" << "\n" << std::endl;
+    std::cout << "6) Restock" << "\n" << std::endl;
+    std::cout << "# --------------- #" << "\n" << std::endl;
     std::cout << "0) End" << "\n\n" << std::endl;
     std::cout << "Type here: " << std::ends;
 
@@ -172,6 +220,10 @@ bool open_establishment_menu(app* app) {
         app->list_purchases();
     } else if (selected == 4) {
         app->total_earned();
+    } else if (selected == 5) {
+        app->list_provider_products();
+    } else if (selected == 6) {
+        app->restock();
     } else {
         std::cout << "Option doesn't exist..." << std::endl;
     }
